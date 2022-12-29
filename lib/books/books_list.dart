@@ -7,6 +7,7 @@ import 'package:master_of_library/model/naver_book.dart';
 import 'package:master_of_library/util/extensions.dart';
 import 'package:master_of_library/widgets/textfield_underline.dart';
 import 'package:dio/dio.dart';
+import 'package:xml/xml.dart';
 
 class BookListTextController extends GetxController with TextFieldDelegate {
   static BookListTextController get to => Get.find<BookListTextController>();
@@ -46,7 +47,8 @@ class _BooksListPageState extends State<BooksListPage> {
             ),
             ElevatedButton(onPressed: () {
               final text = BookListTextController.to.text.value;
-              _search(text);
+              //_search(text);
+              _searchXML(text);
             }, child: Text('검색')),
 
             Expanded(
@@ -105,6 +107,51 @@ class _BooksListPageState extends State<BooksListPage> {
     );
   }
 
+  _searchXML(String query) async {
+    String url = "https://openapi.naver.com/v1/search/book.xml";
+    Map<String,dynamic> params = {
+      "query": query,
+      "display": 100,
+      "start": 1,
+      "sort": "sim"
+    };
+    final options = Options(
+      headers: {
+        "X-Naver-Client-Id": AppConstants.naverId,
+        "X-Naver-Client-Secret": AppConstants.naverSecret,
+      },
+    );
+
+    var response = await Dio().get(url ,
+        queryParameters: params,
+        options: options);
+
+    final document = XmlDocument.parse(response.data);
+    final items = document.findAllElements("item");
+    final newItems = items.map(
+          (node) {
+
+           return Item.fromJson({
+             'title': node.findElements('title').single.text,
+            'link': node.findElements('link').single.text,
+            'image': node.findElements('image').single.text,
+             'author': node.findElements('author').single.text,
+            'discount': node.findElements('discount').single.text,
+            'publisher': node.findElements('publisher').single.text,
+            'pubdate' : node.findElements('pubdate').single.text,
+            'isbn': node.findElements('isbn').single.text,
+            'description': node.findElements('description').single.text
+
+           });
+          }
+      );
+    setState(() {
+      _items = [
+        ...newItems
+      ];
+    });
+
+  }
 
   _search(String query) async {
 
