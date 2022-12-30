@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
 import 'package:master_of_library/colors.dart';
 import 'package:master_of_library/constants.dart';
@@ -50,6 +51,13 @@ class _BooksListPageState extends State<BooksListPage> {
               //_search(text);
               _searchXML(text);
             }, child: Text('검색')),
+
+            ElevatedButton(onPressed: () async{
+
+              String barcode = await FlutterBarcodeScanner.scanBarcode("#ff6666", "취소", false, ScanMode.DEFAULT);
+              print(barcode);
+
+            }, child: Text('barcode')),
 
             Expanded(
               child: ListView.builder(
