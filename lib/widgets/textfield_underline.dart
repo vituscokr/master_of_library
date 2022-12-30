@@ -12,10 +12,11 @@ abstract class TextFieldDelegate {
 class UnderlinedTextField extends StatefulWidget  {
   const UnderlinedTextField({
     Key? key,
-    required this.delegate
+    required this.delegate,
+    required this.onSubmit,
   }) : super(key: key);
   final TextFieldDelegate delegate;
-
+  final VoidCallback onSubmit;
   @override
   State<UnderlinedTextField> createState() => _UnderlinedTextFieldState();
 }
@@ -51,6 +52,7 @@ class _UnderlinedTextFieldState extends State<UnderlinedTextField> {
     return TextField(
         onSubmitted: (text) {
           widget.delegate.onSubmited(text);
+          widget.onSubmit();
         },
       controller: _textController,
       autofocus: false,
@@ -70,7 +72,6 @@ class _UnderlinedTextFieldState extends State<UnderlinedTextField> {
           IconButton(onPressed: _clearText, icon: Icon(Icons.close, color: AppColor.grayscaleBlackLight.color,)):
           const SizedBox(width: 26)
       ),
-
     );
   }
 }
