@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.booksSearch.name,
+      initialRoute: Routes.booksDetail.name,
       getPages: [
         ...routes
       ],

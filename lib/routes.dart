@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:master_of_library/books/book_detail.dart';
 import 'package:master_of_library/books/book_search.dart';
 import 'package:master_of_library/books/books_list.dart';
 import 'package:master_of_library/category/category_edit.dart';
@@ -25,6 +26,11 @@ enum Routes {
       'booksSearch',
       '/books_search',
       BookSearchPage(),
+  ),
+  booksDetail(
+    'booksDetail',
+    '/books_detail',
+    BookDetailPage(),
   ),
 
 
